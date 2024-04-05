@@ -122,15 +122,21 @@ WSGI_APPLICATION = 'indiamart.wsgi.application'
 
 
 # # Replace the DATABASES section of your settings.py with this
+# DATABASES = {
+#   'default': {
+#      'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'mall_b072',      
+#         'USER': 'gaurav1141',      
+#         'PASSWORD': 'RJKjQn2ekhEzBbJD6ZA5ETNyuJJRFYB4',  
+#         'HOST': 'postgres://gaurav1141:RJKjQn2ekhEzBbJD6ZA5ETNyuJJRFYB4@dpg-co83rumv3ddc73b7sbm0-a.oregon-postgres.render.com/mall_b072', 
+#         'PORT': '5432',  
+#   }
+# }
+import dj_database_url
+
+
 DATABASES = {
-  'default': {
-     'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'India-mart',      
-        'USER': 'space-y_owner',      
-        'PASSWORD': 'PFefmJq81uxC',  
-        'HOST': 'ep-damp-pond-a5p5iluo.us-east-2.aws.neon.tech', 
-        'PORT': '5432',  
-  }
+    'default': dj_database_url.config(default='postgres://gaurav1141:RJKjQn2ekhEzBbJD6ZA5ETNyuJJRFYB4@dpg-co83rumv3ddc73b7sbm0-a.oregon-postgres.render.com/mall_b072')
 }
 
 # Password validation
