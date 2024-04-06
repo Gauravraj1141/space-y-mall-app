@@ -5,7 +5,7 @@ from .models import *
 from django.contrib.auth.hashers import make_password
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED
+from rest_framework.status import HTTP_201_CREATED,HTTP_403_FORBIDDEN
 
 # employee management 
 class EmployeeCreateView(GenericAPIView, CreateModelMixin):
@@ -116,6 +116,10 @@ class CreateBillCustomer(GenericAPIView, CreateModelMixin):
         quantity = request.data.get('quantity')
         product = Product.objects.get(product_id=product_id)
         product_price = product.product_price
+        available_quantity = product.product_quantity
+        if available_quantity < quantity:
+            return Response({"message": "Insufficient quantity"}, status=HTTP_403_FORBIDDEN)
+        
         total_price = product_price * quantity
 
         # Create a new dictionary without 'total_price'
@@ -131,6 +135,10 @@ class CreateBillCustomer(GenericAPIView, CreateModelMixin):
         self.perform_create(serializer)
 
         instance_data = serializer.data
+
+        # decrese the quantity of product after purchase 
+        product.product_quantity -= quantity
+        product.save()
 
         # Add total_price to the response data
         instance_data['total_price'] = total_price
